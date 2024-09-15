@@ -1,13 +1,14 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useMessages } from "../features/messages/useMessages";
 import ChatInput from "./ChatInput";
 import { useNewMessage } from "../features/messages/useNewMessage";
+import supabase from "../../supabase"; // Ensure this is the correct path for your Supabase client
 
 function Chat({ selectedChat }) {
   const currentUser = useContext(AuthContext);
 
-  const { messages, isLoading } = useMessages(selectedChat);
+  const { messages, isLoading, refetch } = useMessages(selectedChat);
   const { data: messageData, error } = messages;
 
   const { mutate: addNewMessage, error: newMessageError } = useNewMessage();
@@ -23,14 +24,36 @@ function Chat({ selectedChat }) {
     addNewMessage(newMessage);
   }
 
+  useEffect(() => {
+    // Subscribe to the Supabase real-time changes
+    const channel = supabase
+      .channel("messages") // Channel name for reference
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          refetch();
+        }
+      )
+      .subscribe();
+
+    // Clean up subscription when component unmounts
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [refetch]);
+
   if (isLoading) return <p>Loading messages...</p>;
   if (error) return <p>Error loading messages</p>;
 
-  let sortedMessages = messageData.sort((a, b) => a.timestamp - b.timestamp);
+  // Sort messages by timestamp
+  let sortedMessages = messageData?.sort(
+    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+  );
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="bg-slate-100 p-2 flex items-center gap-4 sticky top-0 z-10">
+    <div className="flex flex-col h-[97vh] overflow-auto border-l-2">
+      <div className="bg-slate-100 p-2 flex items-center gap-4 sticky top-0 z-10 border-b-2">
         <img
           src={selectedChat?.avatar}
           className="h-12 w-12 rounded-full bg-gray-50"
@@ -39,8 +62,8 @@ function Chat({ selectedChat }) {
         <div>{selectedChat?.email}</div>
       </div>
 
-      <div className="bg-gray-50 flex-1 overflow-y-auto p-4">
-        {sortedMessages.map((message) => (
+      <div className="bg-slate-100 flex-1 overflow-y-auto p-4">
+        {sortedMessages?.map((message) => (
           <div key={message.id} className="mb-2">
             <div
               className={
@@ -52,8 +75,8 @@ function Chat({ selectedChat }) {
               <div
                 className={`${
                   message.sender_id === currentUser.id
-                    ? "bg-blue-100"
-                    : "bg-gray-100"
+                    ? "bg-slate-300"
+                    : "bg-slate-50"
                 } p-2 rounded-lg mb-1 max-w-[70%] inline-block`}
               >
                 {message.text}

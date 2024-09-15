@@ -12,18 +12,18 @@ function ChatInput({ onSendMessage }) {
   };
 
   return (
-    <div className="bg-gray-200 p-4 border-t border-gray-300">
+    <div className="bg-slate-200 p-4 border-t border-slate-300 sticky bottom-0">
       <form onSubmit={handleSubmit} className="flex items-center">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message"
-          className="flex-1 p-2 border border-gray-300 rounded-lg"
+          className="flex-1 p-2 border border-slate-300 rounded-lg"
         />
         <button
           type="submit"
-          className="ml-2 p-2 bg-blue-500 text-white rounded-lg"
+          className="ml-2 p-2 bg-slate-600 text-white rounded-lg"
         >
           Send
         </button>

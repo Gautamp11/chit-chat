@@ -53,7 +53,7 @@ import { fetchOrCreateChat } from "../services/messageAPI";
 const MessageItem = ({ person, handleSelectedChat }) => {
   const { user: currentUser } = useUser();
 
-  const { chat, isLoading, error } = useChat(person.id, currentUser.id);
+  const { chat, isLoading, error } = useChat(person.id, currentUser?.id);
 
   const handleClick = async () => {
     if (isLoading || error) return;
@@ -74,7 +74,7 @@ const MessageItem = ({ person, handleSelectedChat }) => {
   return (
     <li
       onClick={handleClick}
-      className="cursor-pointer p-2 hover:bg-gray-200 flex items-center gap-4"
+      className="cursor-pointer p-2 hover:bg-slate-200 flex items-center gap-4 rounded-md"
     >
       <img
         src={person.avatar}

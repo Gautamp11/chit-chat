@@ -19,7 +19,7 @@ export async function signUp(email, password) {
     // Insert the user into the 'users' table with the ID from Auth
     const { data, error } = await supabase
       .from("users")
-      .insert([{ user_id: userId, email }]) // Assuming you have 'id' and 'email' columns in your 'users' table
+      .insert([{ id: userId, email }]) // Assuming you have 'id' and 'email' columns in your 'users' table
       .select();
 
     if (error) {

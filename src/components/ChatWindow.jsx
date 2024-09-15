@@ -60,9 +60,9 @@ const ChatWindow = () => {
   }
 
   return (
-    <div className="flex h-screen gap-8 mx-auto sm:max-w-[90vw] bg-slate-100 m-2 rounded-md p-4">
-      <div className="flex-1 overflow-y-auto">
-        <NavHeader logout={logout} />
+    <div className="flex h-[97vh] gap-4 mx-auto sm:max-w-[90vw] bg-slate-100 my-2 rounded-md px-2">
+      <div className="flex-1 overflow-y-auto ">
+        <NavHeader currentUserEmail={currentUser?.email} logout={logout} />
         <MessageList handleSelectedChat={handleSelectedChat} />
       </div>
       <div className="flex-1 overflow-auto">

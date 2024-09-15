@@ -8,6 +8,7 @@ import ChatWindow from "./components/ChatWindow";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Profile from "./pages/Profile";
 
 function App() {
   const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route index element={<Navigate replace to="chat" />} />
             <Route path="chat" element={<ChatWindow />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />

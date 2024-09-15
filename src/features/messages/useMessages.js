@@ -6,11 +6,12 @@ export function useMessages(selectedChat) {
     data: messages = [],
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["messages", selectedChat?.chat_id],
     queryFn: () => fetchMessages(selectedChat?.chat_id),
     enabled: !!selectedChat?.chat_id, // Ensure chat_id exists before making the query
   });
 
-  return { messages, isLoading, error };
+  return { messages, isLoading, error, refetch };
 }
