@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useMessages } from "../features/messages/useMessages";
 import ChatInput from "./ChatInput";
@@ -6,6 +6,7 @@ import { useNewMessage } from "../features/messages/useNewMessage";
 import supabase from "../../supabase"; // Ensure this is the correct path for your Supabase client
 
 function Chat({ selectedChat }) {
+  const endOfMessagesRef = useRef(null);
   const currentUser = useContext(AuthContext);
 
   const { messages, isLoading, refetch } = useMessages(selectedChat);
@@ -43,6 +44,11 @@ function Chat({ selectedChat }) {
     };
   }, [refetch]);
 
+  // handle scroll to the bottom
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]); // Depend on messages array to trigger scroll on update
+
   if (isLoading) return <p>Loading messages...</p>;
   if (error) return <p>Error loading messages</p>;
 
@@ -52,17 +58,16 @@ function Chat({ selectedChat }) {
   );
 
   return (
-    <div className="flex flex-col h-[97vh] overflow-auto border-l-2">
+    <div className=" flex flex-col h-[97vh] overflow-auto border-l-2 ">
       <div className="bg-slate-100 p-2 flex items-center gap-4 sticky top-0 z-10 border-b-2">
         <img
           src={selectedChat?.avatar}
           className="h-12 w-12 rounded-full bg-gray-50"
           alt="Chat Avatar"
         />
-        <div>{selectedChat?.email}</div>
+        <div>{selectedChat?.fullname || selectedChat?.email}</div>
       </div>
-
-      <div className="bg-slate-100 flex-1 overflow-y-auto p-4">
+      <div className="bg-slate-200 flex-1 overflow-y-auto p-4">
         {sortedMessages?.map((message) => (
           <div key={message.id} className="mb-2">
             <div
@@ -81,14 +86,18 @@ function Chat({ selectedChat }) {
               >
                 {message.text}
                 <div className="text-xs text-gray-500">
-                  {new Date(message.timestamp).toLocaleTimeString()}
+                  {new Date(message.timestamp).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </div>
               </div>
             </div>
           </div>
         ))}
+        <div ref={endOfMessagesRef} />{" "}
+        {/* This empty div is used to scroll to */}
       </div>
-
       <ChatInput onSendMessage={onSendMessage} />
     </div>
   );

@@ -63,7 +63,7 @@ const MessageItem = ({ person, handleSelectedChat }) => {
       user1_id: person.id, // Person's user ID
       user2_id: currentUser.id, // Current user's ID (you already have this)
       avatar: person.avatar, // Person's avatar
-      fullname: person.fullname, // Person's full name
+      fullname: person.name, // Person's full name
       email: person.email, // Person's email
     };
 
@@ -82,8 +82,8 @@ const MessageItem = ({ person, handleSelectedChat }) => {
         className="h-12 w-12 rounded-full"
       />
       <div>
-        <div className="font-semibold">{person.email}</div>
-        <div className="text-sm text-gray-500">{person.lastSeen}</div>
+        <div className="font-semibold">{person.name || person.email}</div>
+        {/* <div className="text-sm text-gray-500">{person.lastSeen}</div> */}
       </div>
     </li>
   );

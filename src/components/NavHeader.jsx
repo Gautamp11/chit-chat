@@ -10,7 +10,7 @@ function NavHeader({ logout, currentUserEmail }) {
         <span>ChitChat</span>
       </h2>
       <div className="flex gap-2">
-        <h3 className="hidden lg:block">{currentUserEmail}</h3>
+        {/* <h3 className="hidden lg:block">{currentUserEmail}</h3> */}
         <button
           className="rounded-md bg-white p-2 hover:bg-slate-300 transition-all "
           onClick={() => navigate("/profile")}
