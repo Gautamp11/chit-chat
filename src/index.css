@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  color: #0f172a;
-}
-
 ::-webkit-scrollbar {
   width: 8px;
   overflow: hidden;

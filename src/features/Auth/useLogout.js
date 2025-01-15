@@ -11,6 +11,7 @@ export function useLogout() {
     onSuccess: () => {
       queryClient.removeQueries();
       navigate("/signin", { replace: true });
+      console.log("Logged out successfully");
     },
   });
 

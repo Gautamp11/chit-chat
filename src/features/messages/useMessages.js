@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMessages } from "../../services/messageAPI";
 
 export function useMessages(selectedChat) {
+  // console.log(selectedChat);
+
   const {
     data: messages = [],
     isLoading,

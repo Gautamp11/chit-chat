@@ -1,73 +1,34 @@
-/* const MessageItem = ({ person, handleSelectedChat }) => {
-  function onSelectChat() {
-    handleSelectedChat(person);
-  }
-
-  return (
-    <li
-      key={person.email}
-      className="flex justify-between gap-x-6 py-5"
-      onClick={onSelectChat}
-    >
-      <div className="flex min-w-0 gap-x-4">
-        <img
-          alt=""
-          src={person.imageUrl}
-          className="h-12 w-12 flex-none rounded-full bg-gray-50"
-        />
-        <div className="min-w-0 flex-auto">
-          <p className="text-sm font-semibold leading-6 text-gray-900">
-            {person.name}
-          </p>
-          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-            {person.email}
-          </p>
-        </div>
-      </div>
-      <div className="flex flex-col items-end">
-        {person.lastSeen ? (
-          <p className="mt-1 text-xs leading-5 text-gray-500">
-            Last seen{" "}
-            <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
-          </p>
-        ) : (
-          <div className="mt-1 flex items-center gap-x-1.5">
-            <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            </div>
-            <p className="text-xs leading-5 text-gray-500">Online</p>
-          </div>
-        )}
-      </div>
-    </li>
-  );
-};
-
-export default MessageItem;
- */
-
+import { useContext } from "react";
 import useUser from "../features/Auth/useUser";
 import { useChat } from "../features/messages/useChat";
 import { fetchOrCreateChat } from "../services/messageAPI";
+import { AuthContext } from "../contexts/AuthContext";
 
 const MessageItem = ({ person, handleSelectedChat }) => {
-  const { user: currentUser } = useUser();
+  const currentUser = useContext(AuthContext);
 
-  const { chat, isLoading, error } = useChat(person.id, currentUser?.id);
+  const { chat, isLoading, error, refetch } = useChat(
+    person.id,
+    currentUser?.id
+  );
 
   const handleClick = async () => {
     if (isLoading || error) return;
-    // Assuming person object contains the user's details
+
+    // Trigger the query to fetch or create the chat
+    const { data } = await refetch();
+
+    // Ensure chat is fetched before proceeding
+
     const chatDetails = {
-      chat_id: chat?.id, // Use the actual chat_id here
-      user1_id: person.id, // Person's user ID
-      user2_id: currentUser.id, // Current user's ID (you already have this)
-      avatar: person.avatar, // Person's avatar
-      fullname: person.name, // Person's full name
-      email: person.email, // Person's email
+      chat_id: data.id,
+      user1_id: person.id,
+      user2_id: currentUser.id,
+      avatar: person.avatar,
+      username: person.name,
+      email: person.email,
     };
 
-    // Pass chatDetails to handleSelectedChat
     handleSelectedChat(chatDetails);
   };
 

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 export default function SignIn() {
   const fakeData = {
     email: "gautam1564p1@gmail.com",
-    password: "Poiuy@p1",
+    password: "Gautam@p1",
   };
 
   const { signIn, error, isLoading } = useSignIn();

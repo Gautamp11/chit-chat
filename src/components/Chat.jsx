@@ -6,6 +6,8 @@ import { useNewMessage } from "../features/messages/useNewMessage";
 import supabase from "../../supabase"; // Ensure this is the correct path for your Supabase client
 
 function Chat({ selectedChat }) {
+  console.log(selectedChat);
+
   const endOfMessagesRef = useRef(null);
   const currentUser = useContext(AuthContext);
 
@@ -18,31 +20,31 @@ function Chat({ selectedChat }) {
     const newMessage = {
       chat_id: selectedChat.chat_id,
       sender_id: currentUser.id,
-      text: messageContent,
+      content: messageContent,
       timestamp: new Date().toISOString(),
     };
 
     addNewMessage(newMessage);
   }
 
-  useEffect(() => {
-    // Subscribe to the Supabase real-time changes
-    const channel = supabase
-      .channel("messages") // Channel name for reference
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
-        (payload) => {
-          refetch();
-        }
-      )
-      .subscribe();
+  // useEffect(() => {
+  //   // Subscribe to the Supabase real-time changes
+  //   const channel = supabase
+  //     .channel("messages") // Channel name for reference
+  //     .on(
+  //       "postgres_changes",
+  //       { event: "INSERT", schema: "public", table: "messages" },
+  //       (payload) => {
+  //         refetch();
+  //       }
+  //     )
+  //     .subscribe();
 
-    // Clean up subscription when component unmounts
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [refetch]);
+  //   // Clean up subscription when component unmounts
+  //   return () => {
+  //     supabase.removeChannel(channel);
+  //   };
+  // }, [refetch]);
 
   // handle scroll to the bottom
   useEffect(() => {

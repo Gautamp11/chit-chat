@@ -1,25 +1,22 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import useUser from "../Auth/useUser";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function ProtectedRoute() {
-  const { user, error, isLoading } = useUser();
+  const currentUser = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    // Redirect if there's no current user or if the user role is not "authenticated"
+    if (currentUser && currentUser.role !== "authenticated") {
+      navigate("/signin");
+    }
+  }, [currentUser, navigate]);
 
-  if (error) {
-    console.error("Error fetching user:", error.message);
-    navigate("/signin");
-  }
+  if (!currentUser) return <div>Loading...</div>;
 
-  if (!user || user.role !== "authenticated") {
-    navigate("/signin");
-  }
-
-  return <Outlet />;
+  return <Outlet />; // Render child routes if the user is authenticated
 }
 
 export default ProtectedRoute;

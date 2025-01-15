@@ -16,7 +16,7 @@ function AuthContextProvider({ children }) {
           return;
         }
 
-        if (session && session.session && session.session.user) {
+        if (session?.session?.user) {
           setCurrentUser(session.session.user);
           console.log("User is authenticated");
         } else {
