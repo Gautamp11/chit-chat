@@ -13,7 +13,7 @@ const MessageList = ({ handleSelectedChat }) => {
   return (
     <ul role="list">
       {users.map(
-        (user) =>
+        (user, index) =>
           currentUser.id !== user.id && (
             <MessageItem
               person={{
@@ -21,8 +21,8 @@ const MessageList = ({ handleSelectedChat }) => {
                 name: user.username,
                 email: user.email,
                 avatar:
-                  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-                // lastSeen: user.last_seen || "unknown",
+                  user.profile_image ||
+                  `https://randomuser.me/api/portraits/men/${index}.jpg`,
                 bio: "",
               }}
               key={user.id} // Use unique ID as key
