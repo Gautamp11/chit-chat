@@ -11,7 +11,7 @@ const MessageList = ({ handleSelectedChat }) => {
   if (error) return <p>Error loading contacts.</p>;
 
   return (
-    <ul role="list" className="divide-y divide-slate-100">
+    <ul role="list">
       {users.map(
         (user) =>
           currentUser.id !== user.id && (

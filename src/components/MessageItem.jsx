@@ -35,7 +35,7 @@ const MessageItem = ({ person, handleSelectedChat }) => {
   return (
     <li
       onClick={handleClick}
-      className="cursor-pointer p-2 hover:bg-slate-200 flex items-center gap-4 rounded-md"
+      className="cursor-pointer p-2 hover:bg-slate-800 flex items-center gap-4 rounded-md"
     >
       <img
         src={person.avatar}

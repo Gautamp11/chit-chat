@@ -8,7 +8,7 @@ export async function fetchMessages(chatId) {
     .eq("chat_id", chatId)
     .order("timestamp", { ascending: true });
 
-  console.log("Hey from fetchMessages");
+  // console.log("Hey from fetchMessages");
   if (error) {
     console.error("Error fetching messages:", error.message);
     return { data: [], error };

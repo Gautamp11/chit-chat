@@ -6,7 +6,7 @@ import { useNewMessage } from "../features/messages/useNewMessage";
 import supabase from "../../supabase"; // Ensure this is the correct path for your Supabase client
 
 function Chat({ selectedChat }) {
-  console.log(selectedChat);
+  // console.log(selectedChat);
 
   const endOfMessagesRef = useRef(null);
   const currentUser = useContext(AuthContext);
@@ -27,24 +27,24 @@ function Chat({ selectedChat }) {
     addNewMessage(newMessage);
   }
 
-  // useEffect(() => {
-  //   // Subscribe to the Supabase real-time changes
-  //   const channel = supabase
-  //     .channel("messages") // Channel name for reference
-  //     .on(
-  //       "postgres_changes",
-  //       { event: "INSERT", schema: "public", table: "messages" },
-  //       (payload) => {
-  //         refetch();
-  //       }
-  //     )
-  //     .subscribe();
+  useEffect(() => {
+    // Subscribe to the Supabase real-time changes
+    const channel = supabase
+      .channel("messages") // Channel name for reference
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          refetch();
+        }
+      )
+      .subscribe();
 
-  //   // Clean up subscription when component unmounts
-  //   return () => {
-  //     supabase.removeChannel(channel);
-  //   };
-  // }, [refetch]);
+    // Clean up subscription when component unmounts
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [refetch]);
 
   // handle scroll to the bottom
   useEffect(() => {
@@ -58,18 +58,19 @@ function Chat({ selectedChat }) {
   let sortedMessages = messageData?.sort(
     (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
   );
+  // console.log(sortedMessages);
 
   return (
-    <div className=" flex flex-col h-[97vh] overflow-auto border-l-2 ">
-      <div className="bg-slate-100 p-2 flex items-center gap-4 sticky top-0 z-10 border-b-2">
+    <div className=" flex flex-col h-screen p-2 ">
+      <div className="bg-slate-900 p-2 flex items-center gap-4 sticky top-0 z-10 border-b-2 border-slate-800">
         <img
           src={selectedChat?.avatar}
-          className="h-12 w-12 rounded-full bg-gray-50"
+          className="h-10 w-10 rounded-full"
           alt="Chat Avatar"
         />
         <div>{selectedChat?.fullname || selectedChat?.email}</div>
       </div>
-      <div className="bg-slate-200 flex-1 overflow-y-auto p-4">
+      <div className="bg-slate-900 p-4">
         {sortedMessages?.map((message) => (
           <div key={message.id} className="mb-2">
             <div
@@ -82,12 +83,12 @@ function Chat({ selectedChat }) {
               <div
                 className={`${
                   message.sender_id === currentUser.id
-                    ? "bg-slate-300"
-                    : "bg-slate-50"
-                } p-2 rounded-lg mb-1 max-w-[70%] inline-block`}
+                    ? "bg-slate-800"
+                    : "bg-slate-500"
+                } p-2 rounded-lg mb-2 inline-block`}
               >
-                {message.text}
-                <div className="text-xs text-gray-500">
+                {message.content}
+                <div className="text-xs text-slate-300">
                   {new Date(message.timestamp).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",

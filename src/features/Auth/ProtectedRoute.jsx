@@ -9,7 +9,7 @@ function ProtectedRoute() {
 
   useEffect(() => {
     // Redirect if there's no current user or if the user role is not "authenticated"
-    if (currentUser && currentUser.role !== "authenticated") {
+    if (currentUser && currentUser?.role !== "authenticated") {
       navigate("/signin");
     }
   }, [currentUser, navigate]);
