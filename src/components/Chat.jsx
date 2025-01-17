@@ -68,7 +68,7 @@ function Chat({ selectedChat }) {
           className="h-10 w-10 rounded-full"
           alt="Chat Avatar"
         />
-        <div>{selectedChat?.fullname || selectedChat?.email}</div>
+        <div>{selectedChat?.username || selectedChat?.email}</div>
       </div>
       <div className="bg-slate-900 p-4">
         {sortedMessages?.map((message) => (
