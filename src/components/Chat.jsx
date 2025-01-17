@@ -61,7 +61,7 @@ function Chat({ selectedChat }) {
   // console.log(sortedMessages);
 
   return (
-    <div className=" flex flex-col h-screen p-2 ">
+    <div className=" flex flex-col h-screen p-2">
       <div className="bg-slate-900 p-2 flex items-center gap-4 sticky top-0 z-10 border-b-2 border-slate-800">
         <img
           src={selectedChat?.avatar}

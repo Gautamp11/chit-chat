@@ -19,17 +19,17 @@ const ChatWindow = () => {
   }
 
   return (
-    <div className="h-screen flex gap-8 mx-auto bg-slate-900 p-2 justify-center text-white sm:px-8">
-      <div className="overflow-y-auto ">
+    <div className="h-screen flex gap-8 mx-auto bg-slate-900 p-2 text-white sm:px-8">
+      <div className="overflow-y-auto md:px-16">
         <NavHeader currentUserEmail={currentUser?.email} logout={logout} />
         <MessageList handleSelectedChat={handleSelectedChat} />
       </div>
-      <div className="block flex-1 sm:overflow-auto">
+      <div className="flex-1 block overflow-auto text-center">
         {selectedChat ? (
           <Chat selectedChat={selectedChat} />
         ) : (
-          <div className="flex items-center h-screen justify-center text-lg font-bold">
-            Start Chatting
+          <div>
+            <h3 className="text-xl font-semibold py-4">Start Chatting</h3>
           </div>
         )}
       </div>
